@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Podkova&family=Raleway&display=swap');
+.container {
+  min-width: 1300px;
+}
+.coffee-machine {
+  margin-top: 3em;
+  border: 1em solid #444a53;
+  border-radius: 2%;
+ /* background-color: rgb(68, 74, 85);*/
+}
+.coffee-kind {
+  background-image: url("../img/background.jpg");
+  background-size: cover;
+  /* background-color: #331f00; */
+  padding-top: 0.7em;
+  border: 0.7em solid transparent;
+  border-image: linear-gradient(#A9A9A9, #DCDCDC);
+  -moz-border-image: -moz-linear-gradient(#A9A9A9, #DCDCDC);
+  -webkit-border-image: -webkit-linear-gradient(#A9A9A9, #DCDCDC);
+  border-image-slice: 1;  
+}
+.coffee-item {
+  background: rgba(0, 0, 0, 0.8);
+  margin: 1em 0;
+  border-radius: calc(5em/2);
+  cursor: pointer;
+}
+.coffee-item:hover {
+  background: rgba(50, 50, 50, 0.7);
+}
+.coffee-item img {
+  width: 5em;
+  height: 5em;
+  background: Lavender;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.coffee-item span {
+  color: Lavender;
+  font-family: 'Podkova', serif;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  margin-left: 2em;
+}
+.coffee-maker {
+  background-color: #331f00;
+  
+}
+.display {
+  background: #ff9933;
+  box-shadow: inset 0 0 3em  #b35900;
+  padding: 1em;
+  min-height: 7em;
+  margin-bottom: 5em;
+  margin-top: 0.5em; 
+  border: 0.5em solid transparent;
+  border-image: linear-gradient(#A9A9A9, #DCDCDC);
+  -moz-border-image: -moz-linear-gradient(#A9A9A9, #DCDCDC);
+  -webkit-border-image: -webkit-linear-gradient(#A9A9A9, #DCDCDC);
+  border-image-slice: 1;  
+}
+.display-text {
+  color: lavender;
+  font-family: 'Raleway', serif;
+  font-size: 1em;
+  font-weight: bold !important;
+}
+.progress-bar {
+  background-color: #99ccff !important;
+}
+
+.coffee-cup {
+  width: 310px;
+  height: 500px;
+  margin-left: 32px;
+  background-image: url("../img/paperGlass.svg");
+  background-size: 49%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+/*  background-position-x: 310px;
+  background-position-y: center;*/
+  position: absolute;
+}
+.atm img {
+  width: 100%;
+}
+
+.btn {
+    margin-top: 20px;
+}
+
+.btn-now {
+    color: lavender;
+    font-family: 'Raleway', serif;
+    font-size: 1em;
+    font-weight: bold !important;
+    box-shadow: 0.1em 0.3em 0 #000000;
+    background-image: linear-gradient(#2F4F4F, #696969),
+    -webkit-linear-gradient(#2F4F4F, #696969);
+}
+ .change-box {
+    height: 13.8em;
+    background-image: url(../img/change.svg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+} 
+.cook, .balance {
+    border: 0.7em solid transparent;
+    border-image: linear-gradient(#A9A9A9, #DCDCDC);
+    -moz-border-image: -moz-linear-gradient(#A9A9A9, #DCDCDC);
+    -webkit-border-image: -webkit-linear-gradient(#A9A9A9, #DCDCDC);
+    border-image-slice: 1;
+    background-image: linear-gradient(#4D1C14, #5E1704),
+    -webkit-linear-gradient(#4D1C14, #5E1704);
+}
+
+.drop-off-win {
+    background-image: url("../img/coffee-maker.svg");
+    background-size: 100%  cover;
+    background-repeat: no-repeat;
+    min-height: 37.5em;
+}
+
+.input-group {
+    margin-top: 1.5em;
+}
+
+.bills {
+    margin-left: 12.5em;
+}
+
+.bills img {
+    margin-top: 1.7em;
+    margin-right: 1.5em;
+    cursor: pointer;
+}
+
+.water {
+    height: 2.4em;
+    transform: rotate(90deg);
+    position: relative;
+    margin-top: 10em;
+    margin-right: 6.3em;
+
+}
+.water div {
+    width: 0em;
+    height: 15em;
+    background-image: linear-gradient(-180deg, #6f4e37, #fdfff5 15%, #473223 50%);
+
+}
+

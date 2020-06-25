@@ -1,0 +1,238 @@
+"use strict";
+let state = "waiting";
+let cupImg = document.querySelector(".coffee-cup");
+let progressBar = document.querySelector(".progress-bar");
+let balanceInput = document.querySelector("Input[placeholder='Баланс']");
+let water = document.querySelector(".water div");
+let changeBox = document.querySelector(".change-box");
+
+cupImg.onclick = takeCoffee;
+
+function buyCoffee(name, price, element) {
+  if (state !="waiting") {
+    return;
+  }
+  if (+balanceInput.value < price) {
+    changeDisplayText("Недостаточно средств");
+    balanceInput.style.background = "crimson";
+  } else {
+    balanceInput.value -= price;
+    balanceInput.style.background = "";
+    state = "cooking";
+    getPaperGlass(name);
+  }
+ }
+
+function getPaperGlass (name) {
+  changeDisplayText("Ваш " + name + " готовится");
+  cupImg.classList.remove("d-none");
+  
+  let j = 0;
+  let intervalFirst = setInterval(function() {
+    j++;
+    cupImg.style.backgroundPositionX = (310 - j*4) + "px";
+    if(j == 70) {
+      clearInterval(intervalFirst);
+      moveWater();
+      cookCoffee(name);
+    }
+  }, 40);
+}
+
+function cookCoffee(name) {
+  let i = 0;
+  let interval = setInterval(function() {
+    i++;
+    progressBar.style.width = i + "%";
+    if (i == 110) {
+      clearInterval(interval);
+      water.style.width = "";
+      changeDisplayText("Ваш " + name+ " готов");
+      state = "ready";
+      cupImg.style.cursor = "pointer";
+    }
+  },100);
+}
+
+function moveWater() {
+  let k = 0;
+  let intervalSecond = setInterval(function() {
+    k += 2;
+    water.style.width = k + "px";
+    if(k == 80) {
+      clearInterval(intervalSecond);
+    }
+  }, 5);
+}
+
+function takeCoffee() {
+  if(state != "ready") {
+    return;
+  } 
+  state = "waiting";
+  cupImg.style.backgroundPositionX = "";
+  cupImg.style.cursor = "";
+  cupImg.classList.add("d-none");
+  changeDisplayText("Выбирете кофе");
+  progressBar.style.width = 0;
+}
+
+function changeDisplayText(text) {
+  let displayText = document.querySelector(".display-text");
+  displayText.innerHTML = text;
+}
+
+//---------------Купюры-------------------------------------------------------
+let bills = document.querySelectorAll('.bills img');
+
+for(let i = 0; i < bills.length; i++) {
+  bills[i].onmousedown = takeMoney;
+}
+
+function takeMoney(event) {
+  event.preventDefault(); 
+  let bill = event.target;
+  
+  bill.style.position = "absolute";
+  bill.style.margin = 0;
+  bill.style.transform = "rotate(90deg)";
+  
+  let billCoords = bill.getBoundingClientRect(); 
+  let billHeight = billCoords.height;
+  let billWidth = billCoords.width;
+ // console.log(event.clientX, event.clientY)  отображает положение курсора
+ 
+  // следующие две строки устанавливаются при нажатии
+   bill.style.top = event.clientY - billWidth/2 +'px'; // купюра совмещается с центром курсора (места x  и y инверсируем , так как bill.style.transform = 'rotate(90deg)'  - x с y поменялись местами)
+   bill.style.left = event.clientX - billHeight/2 +'px';
+  
+   // а в этой фукции те же две строки всякий раз обновляются, купюра прилипла к курсору
+   window.onmousemove = function(event) {
+     bill.style.top = event.clientY - billWidth/2 +'px';
+     bill.style.left = event.clientX - billHeight/2 +'px';
+   }
+
+   //а здесь купюра отлипает (inAtm() - проверка на заданные координаты)
+   bill.onmouseup = function() {
+     window.onmousemove = null;
+     if(inAtm(bill)) {
+     let billCost = +bill.getAttribute('cost');
+     balanceInput.value = +balanceInput.value + billCost;
+     bill.remove();
+     }
+   }
+ }
+ 
+function inAtm(bill) {
+  let atm = document.querySelector('.atm img');
+  let atmCoords = atm.getBoundingClientRect();//координаты купюроприемника
+  let billCoords = bill.getBoundingClientRect();// координаты "носа" купюры
+
+  let billLeftTopCorner = {'x': billCoords.x, 'y': billCoords.y};
+  let billRightTopCorner = {'x': billCoords.x + billCoords.width, 'y': billCoords.y};
+
+  let atmLeftTopCorner = {'x': atmCoords.x, 'y': atmCoords.y};
+  let atmRightTopCorner = {'x': atmCoords.x + atmCoords.width, 'y': atmCoords.y};
+  let atmLeftBottomCorner = {'x': atmCoords.x, 'y': atmCoords.y + atmCoords.height/2};
+
+  if (billLeftTopCorner.x > atmLeftTopCorner.x
+    && billRightTopCorner.x < atmRightTopCorner.x
+    && billLeftTopCorner.y > atmLeftTopCorner.y + 120
+    && billLeftTopCorner.y < atmLeftBottomCorner.y
+    ) {
+    return true;
+  } else {
+   return false;
+  }
+}
+//----------------------------Сдача---------------------------------------------------------
+ 
+let changeButton = document.querySelector(".change-btn");
+ 
+changeButton.onclick = function() {
+  let changeBox = document.querySelector(".change-box");
+  let coins = changeBox.querySelectorAll("img");
+  if(coins. length == 0) {
+    if(balanceInput.value == 0) {
+      return;
+    }
+    changeButton.innerHTML = "Забрать сдачу";
+    takeChange();
+  } else {
+    changeButton.innerHTML = "Сдача";
+    for (let i = 0; i < coins.length; i++) {
+    coins[i].remove();
+  }
+  }
+};
+ 
+function takeChange() {
+  if (balanceInput.value == 0) {
+    return;
+  }
+  if (balanceInput.value >= 10) {
+    balanceInput.value -= 10;
+    tossCoin("10");
+    takeChange();
+  } else if (balanceInput.value >= 5) {
+    balanceInput.value -= 5;
+    tossCoin("5");
+    takeChange();
+  } else if (balanceInput.value >= 2) {
+    balanceInput.value -= 2;
+    tossCoin("2");
+    takeChange();
+  } else { 
+    balanceInput.value -= 1;
+    tossCoin("1");
+    takeChange();
+  }
+}
+
+function tossCoin(cost) {
+  let imgSrc = "";
+switch (cost) {
+  case "10":
+    imgSrc = "img/10rub.png";
+    break;
+  case "5":
+    imgSrc = "img/5rub.png";
+    break;
+  case "2":
+    imgSrc = "img/2rub.png";
+    break;
+  case "1":
+    imgSrc = "img/1rub.png";
+    break;
+}
+ 
+changeBox.style.position = "relative";
+ 
+let changeBoxCoords = changeBox.getBoundingClientRect();
+let randomWidth = getRandomInt(60, changeBoxCoords.width - 100);
+let randomHeight = getRandomInt(60, changeBoxCoords.height - 100);
+ 
+let coin = document.createElement("img");
+coin.setAttribute('src', imgSrc);
+coin.style.width = "50px";
+coin.style.height = "50px";
+coin.style.cursor = "pointer";
+coin.style.position = "absolute";
+coin.style.top = randomHeight + "px";
+coin.style.left = randomWidth + "px";
+changeBox.prepend(coin);
+ 
+coin.onclick = function () { 
+  coin.remove();
+  let coins = changeBox.querySelectorAll('img');
+  if(coins.length == 0) {
+    changeButton.innerHTML = 'Сдача';
+   }
+ }
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+}
